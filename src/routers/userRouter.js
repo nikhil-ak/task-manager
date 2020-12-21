@@ -105,9 +105,11 @@ router.get('/user/me', auth, async (req,res) => {
 
 router.post('/user', async (req,res) => {
     try {
+    
         const newUser = await new User(req.body)
         await newUser.save()
         sendWelcomeEmail(newUser.email, newUser.name)
+
         const token = await newUser.generateAuthToken();
         res.status(201).send({newUser, token})
     }
