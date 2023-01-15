@@ -109,4 +109,28 @@ router.delete('/task/:id', auth, async (req,res) => {
    
 })
 
+router.put('/task/:id', auth, async (req,res) => {
+    const updates = Object.keys(req.body)
+    const allowedUpdates = ['description', 'completed']
+    const validation = updates.every(e => {return allowedUpdates.includes(e)})
+    if(!validation) {
+        return res.status(400).send('please enter valid update keys')
+    }
+
+    try {
+        // const updatedTask = await Task.findByIdAndUpdate(req.params.id, req.body)
+        const updatedTask = await Task.findOne({_id: req.params.id, owner: req.user._id})
+        if(!updatedTask) {
+            return res.status(404).send("no tasks found")
+        }
+        updates.forEach(e => updatedTask[e] = req.body[e])
+        await updatedTask.save()
+        res.status(201).send(updatedTask)
+    }
+    catch(err) {
+        res.status(400).send(err)
+    }
+ 
+})
+
 module.exports = router
