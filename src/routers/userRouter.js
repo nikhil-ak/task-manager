@@ -52,56 +52,10 @@ router.get('/user/:id/avatar', async (req,res) => {
     }
 
 })
-// router.get('/user', (req,res) => {
-//     User.find({}).then((result) => res.status(200).send(result))
-//     .catch((err) => res.status(400).send(err))
-// })
 
-// router.get('/user', async (req,res) => {
-//     try {
-//         const users = await User.find({})
-//         res.status(200).send(users)
-//     }
-//     catch (err){
-//         res.status(400).send(err)
-//     }
-// })
 router.get('/user/me', auth, async (req,res) => {
     res.status(200).send(req.user)
 })
-
-// router.get('/user/:id', (req,res) => {
-//     const _id = req.params.id;
-//     console.log(_id);
-//     User.findById(_id).then((result) =>{
-//         if(!result) {
-//             return res.status(404).send()
-//         }
-//         res.status(200).send(result)
-//     })
-//     .catch((err) => res.status(400).send(err))
-// })
-
-// router.get('/user/:id', async (req,res) => {
-//     const _id = req.params.id;
-//     console.log(_id);
-//     try {
-//         const user = await User.findById(_id)
-//         console.log(user);
-//         if(!user) {
-//             return res.status(404).send()
-//         }
-//         res.status(200).send(user)
-//     }
-//     catch (err){
-//         res.status(400).send(err)
-//     }
-// })
-
-// router.post('/user', (req,res) => {
-//     const newUser = new User(req.body).save().then((result) => res.status(201).send(result))
-//     .catch((err) => res.status(400).send("error", err))
-// })
 
 router.post('/user', async (req,res) => {
     try {
@@ -114,6 +68,21 @@ router.post('/user', async (req,res) => {
         res.status(201).send({newUser, token})
     }
     catch(err) {
+        res.status(400).send(err)
+    }
+})
+
+router.get('/user', (req,res) => {
+    User.find({}).then((result) => res.status(200).send(result))
+    .catch((err) => res.status(400).send(err))
+})
+
+router.get('/user', async (req,res) => {
+    try {
+        const users = await User.find({})
+        res.status(200).send(users)
+    }
+    catch (err){
         res.status(400).send(err)
     }
 })
